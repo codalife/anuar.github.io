@@ -15,7 +15,7 @@
     "clean": "rm -Rf ./_site/posts/*",
     "build-gh-pages": "npx @11ty/eleventy --pathprefix=/anuar.github.io/",
     "start": "eleventy --serve",
-    "build": "eleventy"
+    "build": "npm run clean && npm run build-ci"
   },
   "pre-push": [
     "build"
