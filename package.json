@@ -13,7 +13,7 @@
     "test": "mocha test/test*.js",
     "test-watch": "mocha test/test*.js --watch --watch-files=test/*",
     "clean": "rm -Rf ./_site/posts/*",
-    "build-gh-pages": "npx @11ty/eleventy",
+    "build-gh-pages": "npx @11ty/eleventy --prefix=/blog/",
     "start": "eleventy --serve",
     "build": "npm run clean && npm run build-ci"
   },
