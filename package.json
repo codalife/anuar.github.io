@@ -5,7 +5,6 @@
   "description": "A starter repository for a blog web site using the Eleventy static site generator.",
   "scripts": {
     "build-ci": "npm run js-build && eleventy && npm run test",
-    "build": "npm run clean && npm run build-ci",
     "watch": "concurrently \"npm run serve\" \"npm run js-build-watch\" \"npm run test-watch\"",
     "serve": "npm run clean && eleventy --serve",
     "js-build": "rollup -c rollup.config.js",
@@ -13,7 +12,10 @@
     "debug": "DEBUG=* eleventy && npm run test",
     "test": "mocha test/test*.js",
     "test-watch": "mocha test/test*.js --watch --watch-files=test/*",
-    "clean": "rm -Rf ./_site/posts/*"
+    "clean": "rm -Rf ./_site/posts/*",
+    "build-gh-pages": "npx @11ty/eleventy --pathprefix=/your-repository-name/",
+    "start": "eleventy --serve",
+    "build": "eleventy"
   },
   "pre-push": [
     "build"
