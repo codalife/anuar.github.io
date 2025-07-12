@@ -1,0 +1,19 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "Anuar&#39;s blog",
+  "home_page_url": "https://update-me.com",
+  "feed_url": "https://update-me.com/feed/feed.json",
+  "description": "Description of the website. Update me.",
+  "author": {
+    "name": "Author Name. Update me.",
+    "url": ""
+  },
+  "items": [{
+      "id": "https://update-me.com/blog/posts/firstpost/",
+      "url": "https://update-me.com/blog/posts/firstpost/",
+      "title": "This is my first post.",
+      "content_html": "<h2 id=\"under-construction\">Under Construction <a class=\"direct-link\" href=\"#under-construction\">#</a></h2>\n",
+      "date_published": "2025-07-11T00:00:00+00:00"
+    }
+  ]
+}
