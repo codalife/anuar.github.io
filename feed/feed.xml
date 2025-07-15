@@ -5,7 +5,7 @@
 	
 	<link href="https://update-me.com/blog/feed/feed.xml" rel="self"/>
 	<link href="https://update-me.com"/>
-	<updated>2025-07-11T00:00:00+00:00</updated>
+	<updated>2025-07-15T00:00:00+00:00</updated>
 	<id>https://update-me.com</id>
 	<author>
 		<name>Author Name. Update me.</name>
@@ -13,12 +13,76 @@
 	</author>
 	
 	<entry>
-		<title>This is my first post.</title>
-		<link href="https://update-me.com/blog/posts/firstpost/"/>
-		<updated>2025-07-11T00:00:00+00:00</updated>
-		<id>https://update-me.com/blog/posts/firstpost/</id>
+		<title>Building Computer Vision System. Lessons in Technical Leadership.</title>
+		<link href="https://update-me.com/blog/posts/spotter_blog_post/"/>
+		<updated>2025-07-15T00:00:00+00:00</updated>
+		<id>https://update-me.com/blog/posts/spotter_blog_post/</id>
 		<content type="html">
-		  &lt;h2 id=&quot;under-construction&quot;&gt;Under Construction &lt;a class=&quot;direct-link&quot; href=&quot;#under-construction&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+		  &lt;p&gt;&lt;strong&gt;Bottom Line Up Front:&lt;/strong&gt; Built an AI-powered shooting target analysis system from scratch with zero computer vision background. The technical challenge taught me more about engineering leadership than any web project I&#39;d shipped at scale companies.&lt;/p&gt;
+&lt;h2 id=&quot;the-challenge%3A-operating-in-uncharted-territory&quot;&gt;The Challenge: Operating in Uncharted Territory &lt;a class=&quot;direct-link&quot; href=&quot;#the-challenge%3A-operating-in-uncharted-territory&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;As a web engineer with 7 years at Uber, Headspace, and Aurora, I could have easily dismissed computer vision as &amp;quot;not my domain.&amp;quot; Instead, I saw an interesting problem: automatically detecting new bullet holes on shooting targets in real-time.&lt;/p&gt;
+&lt;p&gt;The constraints were real—this needed to work with actual hardware in field conditions, not just clean datasets in Jupyter notebooks. I had to build everything: the data collection pipeline, annotation workflow, model training, and edge deployment on a Raspberry Pi 5.&lt;/p&gt;
+&lt;h2 id=&quot;initial-approach%3A-the-elegant-theory-trap&quot;&gt;Initial Approach: The Elegant Theory Trap &lt;a class=&quot;direct-link&quot; href=&quot;#initial-approach%3A-the-elegant-theory-trap&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;My first instinct was to frame this as a &amp;quot;before/after comparison&amp;quot; problem. Siamese neural networks seemed perfect—feed the model two images and let it learn to spot differences. The approach felt mathematically elegant.&lt;/p&gt;
+&lt;p&gt;But after weeks of planning and initial development, I realized I was solving the wrong problem. Real shooting scenarios don&#39;t give you perfect &amp;quot;before&amp;quot; shots. Lighting changes, paper moves, and you need to work with whatever image you can capture.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Leadership Lesson #1:&lt;/strong&gt; Resist the urge to force-fit elegant solutions. Match your technical approach to real-world constraints, not theoretical ideals.&lt;/p&gt;
+&lt;h2 id=&quot;the-pivot%3A-strategic-resource-allocation-over-pure-ml&quot;&gt;The Pivot: Strategic Resource Allocation Over Pure ML &lt;a class=&quot;direct-link&quot; href=&quot;#the-pivot%3A-strategic-resource-allocation-over-pure-ml&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Here&#39;s where engineering leadership intersected with technical choices. I faced a classic fork-in-the-road decision:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Path 1:&lt;/strong&gt; Collect significantly more training data and make the Siamese CNN approach work&lt;br&gt;
+&lt;strong&gt;Path 2:&lt;/strong&gt; Pivot to a hybrid solution that leveraged existing data more efficiently&lt;/p&gt;
+&lt;p&gt;Both were technically viable. But Path 1 required weeks of additional data collection with no guarantee of success—Siamese networks are notoriously data-hungry. Path 2 let me combine techniques intelligently and ship something that worked.&lt;/p&gt;
+&lt;p&gt;I chose the hybrid approach:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;YOLO for target localization&lt;/strong&gt; - Detect target positions to remove background noise and focus on the relevant area&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LightGlue for local feature matching&lt;/strong&gt; - Align before/after images by finding corresponding keypoints, handling camera movement and paper shifts&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Image comparison&lt;/strong&gt; - Detect changes within the aligned, cropped target area&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Leadership Lesson #2:&lt;/strong&gt; When facing multiple viable technical paths, evaluate them on resource efficiency and risk, not just theoretical elegance. Sometimes the &amp;quot;less pure&amp;quot; ML solution is the better engineering solution.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Leadership Lesson #3:&lt;/strong&gt; Sunk cost bias kills projects. When performance metrics show you&#39;re on the wrong path, pivot fast and learn faster.&lt;/p&gt;
+&lt;h2 id=&quot;the-80%2F20-reality-check&quot;&gt;The 80/20 Reality Check &lt;a class=&quot;direct-link&quot; href=&quot;#the-80%2F20-reality-check&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Here&#39;s what actually consumed my time over those couple of months:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;80% Data Engineering:&lt;/strong&gt; Setting up hardware (Raspberry Pi + 64MP Arducam), building annotation pipelines with CVAT, handling coordinate system bugs, image resizing, format conversions&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;20% Model Architecture:&lt;/strong&gt; The actual YOLO training and tuning&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This mirrors every complex system I&#39;ve built in web development—the infrastructure and data architecture matter far more than the &amp;quot;sexy&amp;quot; algorithmic work.&lt;/p&gt;
+&lt;p&gt;I spent days just getting the annotation coordinate system right. Original images were 2MB+ and crashed the training pipeline due to memory constraints. Had to resize everything to 640x640 and debug why my y-axis was inverted.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Leadership Lesson #4:&lt;/strong&gt; Production systems are 80% plumbing, 20% algorithms. Plan accordingly.&lt;/p&gt;
+&lt;h2 id=&quot;modern-learning-velocity&quot;&gt;Modern Learning Velocity &lt;a class=&quot;direct-link&quot; href=&quot;#modern-learning-velocity&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;What struck me most was how different learning looks in 2025. I used LLMs to sanity-check architectural decisions, consumed Andrew Ng&#39;s courses for fundamentals, and leveraged papers/podcasts for cutting-edge techniques. The feedback loop between &amp;quot;I have a question&amp;quot; and &amp;quot;I understand the solution space&amp;quot; has compressed from weeks to hours.&lt;/p&gt;
+&lt;p&gt;When I hit the coordinate system bug, I could iterate through solutions in real-time rather than waiting for Stack Overflow responses or diving through documentation.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Leadership Lesson #5:&lt;/strong&gt; The tools for continuous learning have never been better. Use them as force multipliers, not crutches.&lt;/p&gt;
+&lt;h2 id=&quot;systems-thinking%3A-orchestrating-components&quot;&gt;Systems Thinking: Orchestrating Components &lt;a class=&quot;direct-link&quot; href=&quot;#systems-thinking%3A-orchestrating-components&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The final solution wasn&#39;t a single model—it was an orchestrated pipeline:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;YOLO for target detection and background removal&lt;/strong&gt; - Precisely crop to the target area, eliminating environmental noise&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LightGlue for local feature matching&lt;/strong&gt; - Find corresponding keypoints between images to achieve robust alignment despite camera movement and paper positioning variations&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Change detection&lt;/strong&gt; - Compare aligned target areas to identify new holes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This reinforced something I&#39;ve seen across domains: production systems are about intelligent component orchestration, not single-technique optimization. The breakthrough came from combining multiple deep learning approaches (YOLO + LightGlue) with traditional change detection rather than forcing one technique.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Leadership Lesson #6:&lt;/strong&gt; Success comes from systems thinking, not component optimization.&lt;/p&gt;
+&lt;h2 id=&quot;the-%22it-works!!!!%22-moment&quot;&gt;The &amp;quot;It WORKS!!!!&amp;quot; Moment &lt;a class=&quot;direct-link&quot; href=&quot;#the-%22it-works!!!!%22-moment&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;April 25th, 11 AM: After days of debugging annotation formats and coordinate systems, the model finally detected targets correctly. That moment of breakthrough—seeing the bounding boxes appear around bullet holes in test images—reminded me why I love building things that work in the real world.&lt;/p&gt;
+&lt;p&gt;But more importantly, it validated the broader approach: when facing unfamiliar technical domains, the same engineering principles apply. Break down the problem, validate assumptions early, iterate based on data, and don&#39;t be afraid to pivot when the evidence points in a new direction.&lt;/p&gt;
+&lt;h2 id=&quot;broader-implications&quot;&gt;Broader Implications &lt;a class=&quot;direct-link&quot; href=&quot;#broader-implications&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;This project reinforced three patterns I&#39;ve seen across every successful technical initiative:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Front-load research before committing to implementation.&lt;/strong&gt; The weeks I spent understanding the problem space saved months of building the wrong solution.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Data quality often trumps algorithmic sophistication.&lt;/strong&gt; Clean, well-annotated datasets with proper coordinate systems matter more than hyperparameter tuning.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Real-world constraints drive architecture decisions more than theoretical elegance.&lt;/strong&gt; Hardware limitations, memory constraints, and field conditions shaped every major technical choice.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;These lessons apply whether you&#39;re building computer vision systems, distributed web services, or autonomous vehicle software. The domain changes, but the engineering leadership principles remain constant.&lt;/p&gt;
+&lt;h2 id=&quot;looking-forward&quot;&gt;Looking Forward &lt;a class=&quot;direct-link&quot; href=&quot;#looking-forward&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;This project scratched a personal itch while teaching me fundamentals that apply to any technical domain. It&#39;s a reminder that the best way to learn isn&#39;t always through courses or tutorials—sometimes you need to build something real, with real constraints, and real stakes.&lt;/p&gt;
+&lt;p&gt;The spotter app now accurately detects new bullet holes in real-time. But the bigger win was proving to myself that with the right approach to problem-solving and continuous learning, any technical domain is learnable.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Built over a couple of months while studying ML fundamentals. Sometimes the best classroom is your own curiosity plus a problem worth solving.&lt;/em&gt;&lt;/p&gt;
 
 			
 		</content>
