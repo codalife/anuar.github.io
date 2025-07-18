@@ -5,7 +5,7 @@
 	
 	<link href="https://update-me.com/blog/feed/feed.xml" rel="self"/>
 	<link href="https://update-me.com"/>
-	<updated>2025-07-15T00:00:00+00:00</updated>
+	<updated>2025-07-18T00:00:00+00:00</updated>
 	<id>https://update-me.com</id>
 	<author>
 		<name>Author Name. Update me.</name>
@@ -83,6 +83,77 @@
 &lt;p&gt;The spotter app now accurately detects new bullet holes in real-time. But the bigger win was proving to myself that with the right approach to problem-solving and continuous learning, any technical domain is learnable.&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;em&gt;Built over a couple of months while studying ML fundamentals. Sometimes the best classroom is your own curiosity plus a problem worth solving.&lt;/em&gt;&lt;/p&gt;
+
+			
+		</content>
+	</entry>
+	
+	<entry>
+		<title>An Ode to the State Machine. How I Learned to Stop Worrying and Love Predictable State</title>
+		<link href="https://update-me.com/blog/posts/state-machine-blog-post/"/>
+		<updated>2025-07-18T00:00:00+00:00</updated>
+		<id>https://update-me.com/blog/posts/state-machine-blog-post/</id>
+		<content type="html">
+		  &lt;h2 id=&quot;the-breaking-point&quot;&gt;The Breaking Point &lt;a class=&quot;direct-link&quot; href=&quot;#the-breaking-point&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Picture this: You&#39;re working on a seemingly straightforward app using Model-View-Presenter (MVP) with RxJS. The reactive patterns feel elegant at first—data flows, views update, life is good. But then, something insidious begins to happen.&lt;/p&gt;
+&lt;p&gt;Adding new features becomes a game of Jenga. Each change threatens to topple the entire structure because you can&#39;t predict which reactive models will cascade into chaos. Sound familiar?&lt;/p&gt;
+&lt;h2 id=&quot;when-if-statements-multiply-like-rabbits&quot;&gt;When If-Statements Multiply Like Rabbits &lt;a class=&quot;direct-link&quot; href=&quot;#when-if-statements-multiply-like-rabbits&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;In our case, we started adding guards everywhere—if statements that would &amp;quot;protect&amp;quot; certain parts of our data from changing unless specific conditions were met. These conditions? They all boiled down to one thing: &lt;strong&gt;the state of the application&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;But here&#39;s where it got really interesting (and by interesting, I mean painful). The app needed to behave differently based on state, but deriving that state wasn&#39;t just about looking at current values—it depended on the journey of how we got there.&lt;/p&gt;
+&lt;h3 id=&quot;a-tale-of-two-drags&quot;&gt;A Tale of Two Drags &lt;a class=&quot;direct-link&quot; href=&quot;#a-tale-of-two-drags&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Consider this real example that kept me up at night:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Scenario 1&lt;/strong&gt;: User drags a calendar block to the right. When it reaches the edge, the calendar body should scroll left to reveal more space.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Scenario 2&lt;/strong&gt;: User drags the calendar itself with mouse down. The calendar should move right with the drag.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Same gesture, completely different behaviors. The only difference? The application&#39;s state when the drag began.&lt;/p&gt;
+&lt;h2 id=&quot;the-confidence-crisis&quot;&gt;The Confidence Crisis &lt;a class=&quot;direct-link&quot; href=&quot;#the-confidence-crisis&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;This complexity created a devastating side effect: &lt;strong&gt;developer paralysis&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Engineers lost confidence that new code wouldn&#39;t break existing logic. Code reviews became archaeological expeditions, trying to unearth all the hidden dependencies. New modules inadvertently created cycles in our MVP pattern. Development velocity didn&#39;t just slow—it ground to a halt.&lt;/p&gt;
+&lt;h2 id=&quot;the-false-start%3A-dependency-graphs&quot;&gt;The False Start: Dependency Graphs &lt;a class=&quot;direct-link&quot; href=&quot;#the-false-start%3A-dependency-graphs&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;My first attempt at solving this was to create a static dependency graph of all reactive modules. It helped visualize the mess, but it was like having a map of a maze while still being stuck inside it. The graph was static, but our problems were dynamic.&lt;/p&gt;
+&lt;h2 id=&quot;enter-the-state-machine&quot;&gt;Enter the State Machine &lt;a class=&quot;direct-link&quot; href=&quot;#enter-the-state-machine&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;That&#39;s when I discovered (or rediscovered) the humble state machine. Instead of deriving state from a complex web of conditions, what if we explicitly modeled our application states and the transitions between them?&lt;/p&gt;
+&lt;p&gt;The transformation was profound:&lt;/p&gt;
+&lt;h3 id=&quot;before-state-machines%3A&quot;&gt;Before State Machines: &lt;a class=&quot;direct-link&quot; href=&quot;#before-state-machines%3A&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;isDragging &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; dragTarget &lt;span class=&quot;token operator&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;block&#39;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; isAtEdge &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;isScrolling &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; previousAction &lt;span class=&quot;token operator&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;scroll&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;br&gt;  &lt;span class=&quot;token comment&quot;&gt;// Maybe scroll left? Unless...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;after-state-machines%3A&quot;&gt;After State Machines: &lt;a class=&quot;direct-link&quot; href=&quot;#after-state-machines%3A&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;pre class=&quot;language-javascript&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;stateMachine&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;transition&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&#39;BLOCK_DRAG_AT_EDGE&#39;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;token comment&quot;&gt;// The machine knows exactly what should happen&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;the-benefits-that-followed&quot;&gt;The Benefits That Followed &lt;a class=&quot;direct-link&quot; href=&quot;#the-benefits-that-followed&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Predictability&lt;/strong&gt;: Given a state and an event, the outcome is deterministic. No more surprises.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Visualization&lt;/strong&gt;: We could literally draw our application logic. Product managers loved this.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Testability&lt;/strong&gt;: Testing state transitions is straightforward. Test the machine, trust the system.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Onboarding&lt;/strong&gt;: New developers could understand the app by studying the state diagram, not by reverse-engineering if-statement spaghetti.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Confidence&lt;/strong&gt;: Adding features became a matter of adding states or transitions, not threading new logic through existing guards.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;the-real-magic&quot;&gt;The Real Magic &lt;a class=&quot;direct-link&quot; href=&quot;#the-real-magic&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The true power of state machines isn&#39;t just in managing complexity—it&#39;s in &lt;strong&gt;preventing&lt;/strong&gt; complexity. They force you to think about your application as a series of discrete states, making impossible states actually impossible.&lt;/p&gt;
+&lt;p&gt;That dragging problem? It became two distinct states: &lt;code&gt;DRAGGING_BLOCK&lt;/code&gt; and &lt;code&gt;DRAGGING_CALENDAR&lt;/code&gt;. Each state knew exactly how to handle mouse movements. No ambiguity, no edge cases, no surprises.&lt;/p&gt;
+&lt;h2 id=&quot;your-turn&quot;&gt;Your Turn &lt;a class=&quot;direct-link&quot; href=&quot;#your-turn&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;If you&#39;re finding yourself:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Adding guards to guards&lt;/li&gt;
+&lt;li&gt;Losing track of why certain conditions exist&lt;/li&gt;
+&lt;li&gt;Afraid to refactor because you might break something&lt;/li&gt;
+&lt;li&gt;Spending more time debugging state than building features&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Consider reaching for a state machine. Whether you use XState, a simple switch statement, or just the pattern itself, explicitly modeling your states will transform how you think about your application.&lt;/p&gt;
+&lt;h2 id=&quot;the-bottom-line&quot;&gt;The Bottom Line &lt;a class=&quot;direct-link&quot; href=&quot;#the-bottom-line&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;State machines aren&#39;t a silver bullet, but they&#39;re close. They turn the implicit explicit, the complex simple, and the unpredictable predictable. In a world of reactive spaghetti and cascading side effects, they&#39;re a beacon of clarity.&lt;/p&gt;
+&lt;p&gt;Sometimes the old solutions are old because they&#39;ve stood the test of time. State machines have been solving these problems since before we were born. Maybe it&#39;s time we listened.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Have you used state machines to tame complexity in your applications? What patterns have saved your projects from state-management hell? I&#39;d love to hear your stories in the comments.&lt;/em&gt;&lt;/p&gt;
 
 			
 		</content>
